@@ -13,7 +13,7 @@ public class Player {
     private final String secondNationality;
     private final String name;
     private String folder;
-    private Map<String, String> data = new HashMap<>();
+    private final Map<String, String> data = new HashMap<>();
 
     public Player(String uid, String nationality, String secondNationality, String name) {
         this.uid = uid;

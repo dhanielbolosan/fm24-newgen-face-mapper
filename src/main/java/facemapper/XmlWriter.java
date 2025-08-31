@@ -59,7 +59,13 @@ public class XmlWriter {
 
             // Create folder if not exist
             File folder = new File(basePath);
-            if (!folder.exists()) folder.mkdirs();
+            if (!folder.exists()) {
+                boolean created = folder.mkdirs();
+                if (!created) {
+                    // FIX ERROR HANDLING
+                    System.out.println("Could not create folder " + folder.getAbsolutePath());
+                }
+            }
 
             String outputPath = basePath + "/config.xml";
 
