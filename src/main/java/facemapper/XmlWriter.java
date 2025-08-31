@@ -1,6 +1,7 @@
 package facemapper;
 
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +11,13 @@ import java.util.*;
  * Utility class for processing player data and writing a config.xml
  */
 public class XmlWriter {
+    // Initialize mapping modes
+    public enum MappingMode {
+        PRESERVE,
+        OVERWRITE,
+    }
+
+    // Initialize random and folder cache used for receiving random image
     private static final Random RANDOM = new Random();
     private static final Map<String, File[]> folderCache = new HashMap<>();
 
@@ -41,7 +49,14 @@ public class XmlWriter {
         return images[RANDOM.nextInt(images.length)].getAbsolutePath();
     }
 
-    public void writeXml(List<Player> players){
+    /**
+     * Write XML mapping for players according to the selected mode
+     *
+     * @param players          List of parsed players
+     * @param mode             Mapping mode
+     * @param existingMappings Existing XML mappings (optional)
+     */
+    public void writeXml(List<Player> players, MappingMode mode, Map<String, Map<String,String>> existingMappings) {
         // NEED TO IMPLEMENT CHOOSING PATH
         String basePath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/Football Manager 2024/graphics/NG_Regens";
         String outputPath = basePath + "/config.xml";
@@ -51,6 +66,9 @@ public class XmlWriter {
         if (!folder.exists() && !folder.mkdirs()) {
             System.err.println("Failed to create directory: " + folder.getAbsolutePath());
         }
+
+        // Track written UIDs to avoid duplicate records
+        Set<String> writtenUids = new HashSet<>();
 
         // Initialize factory
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
@@ -68,18 +86,49 @@ public class XmlWriter {
             writer.writeAttribute("id", "maps");
             writer.writeCharacters("\n");
 
+            // If mode is preserve, write them first and mark uids
+            if (mode == MappingMode.PRESERVE && existingMappings != null) {
+                // Iterate through every entry
+                for (Map.Entry<String, Map<String, String>> entry : existingMappings.entrySet()) {
+                    // Receive the key (uid) and value (nationality, image)
+                    String uid = entry.getKey();
+                    Map<String, String> map = entry.getValue();
+
+                    // Get data from "from" and "to"
+                    String from = map.get("nationality") + "/" + map.get("image");
+                    String to = "graphics/pictures/person/r-" + uid + "/portrait";
+
+                    // Mark uid
+                    writtenUids.add(uid);
+
+                    // Create element <record from="..." to="..."/>
+                    writer.writeCharacters("        ");
+                    writer.writeStartElement("record");
+                    writer.writeAttribute("from", from);
+                    writer.writeAttribute("to", to);
+                    writer.writeEndElement();
+                    writer.writeCharacters("\n");
+                }
+            }
+
             // Iterate through all players to add records
             for (Player player: players) {
+                // Skip already processed uid
+                String uid = player.getUid();
+                if (writtenUids.contains(uid)) continue;
+
                 // Determine folder based on player nationality
                 String folderName = NationalityMapper.getFolder(player.getNationality(), player.getSecondNationality());
                 player.setFolder(folderName);
 
+                // Get a random image, remove ".png" extension, otherwise use the player uid
                 String imagePath = getRandomImage(basePath + "/" + folderName);
-
-                // Remove ".png" extension if image exists, else use player UID
-                String imageWithoutExt = imagePath != null
+                String imageWithoutExt = (imagePath != null)
                         ? new File(imagePath).getName().replace(".png", "")
                         : player.getUid();
+
+                // Mark uid
+                writtenUids.add(uid);
 
                 // Create element <record from="..." to="..."/>
                 writer.writeCharacters("        ");
@@ -103,19 +152,32 @@ public class XmlWriter {
             // IMPROVE
             System.out.println("config.xml successfully written to" + outputPath);
 
-        } catch (Exception e){
-            System.err.println("Error writing to XML file: " + e.getMessage());
-            e.printStackTrace();
+        } catch (XMLStreamException e) {
+            System.err.println("XML writing failed due to a stream issue: " + e.getMessage());
+        } catch (java.io.FileNotFoundException e) {
+            System.err.println("Output file not found: " + outputPath);
+        } catch (Exception e) {
+            System.err.println("Unexpected error while writing XML to: " + outputPath);
         }
-
     }
 
     public static void main(String[] args) {
-        String rtfPath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/rtf/2030andorra.rtf";
+        String rtfPath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/rtf/andorranew.rtf";
         RtfParser parser = new RtfParser();
         List<Player> players = parser.parseRtf(rtfPath);
 
         XmlWriter writer = new XmlWriter();
-        writer.writeXml(players);
+
+        /*
+        // OVERWRITE mode
+        System.out.println("Testing OVERWRITE mode");
+        writer.writeXml(players, MappingMode.OVERWRITE, null);
+
+        // PRESERVE mode
+        XmlParser xmlParser = new XmlParser();
+        Map<String, Map<String, String>> existingMappings = xmlParser.parseXml("/Users/dhanielbolosan/Library/Application Support/Sports Interactive/Football Manager 2024/graphics/NG_Regens/config.xml");
+        System.out.println("Testing PRESERVE mode");
+        writer.writeXml(players, MappingMode.PRESERVE, existingMappings);
+         */
     }
 }
