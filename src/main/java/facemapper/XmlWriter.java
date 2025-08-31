@@ -1,21 +1,15 @@
 package facemapper;
 
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.FileOutputStream;
+import java.util.*;
 
 /**
  * Utility class for processing player data and writing a config.xml
  */
 public class XmlWriter {
-
     private static final Random RANDOM = new Random();
     private static final Map<String, File[]> folderCache = new HashMap<>();
 
@@ -47,94 +41,79 @@ public class XmlWriter {
         return images[RANDOM.nextInt(images.length)].getAbsolutePath();
     }
 
-    /**
-     * Generates and writes an XML file mapping player UIDs to image paths
-     * Each player record includes a "from" (folder/image) and "to" (graphics path)
-     * @param players List of Player objects to process
-     */
-    public void writeXml(List<Player> players) {
-        try {
-            // NEED TO IMPLEMENT CHOOSING PATH
-            String basePath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/Football Manager 2024/graphics/NG_Regens";
+    public void writeXml(List<Player> players){
+        // NEED TO IMPLEMENT CHOOSING PATH
+        String basePath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/Football Manager 2024/graphics/NG_Regens";
+        String outputPath = basePath + "/config.xml";
 
-            // Create folder if not exist
-            File folder = new File(basePath);
-            if (!folder.exists()) {
-                boolean created = folder.mkdirs();
-                if (!created) {
-                    // FIX ERROR HANDLING
-                    System.out.println("Could not create folder " + folder.getAbsolutePath());
-                }
-            }
+        // Create folder if not exist
+        File folder = new File(basePath);
+        if (!folder.exists() && !folder.mkdirs()) {
+            System.err.println("Failed to create directory: " + folder.getAbsolutePath());
+        }
 
-            String outputPath = basePath + "/config.xml";
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
-            // Initialize XML document builder
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
+        try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+            XMLStreamWriter writer = factory.createXMLStreamWriter(fos, "UTF-8");
 
-            // Create root <record> element
-            Element record = doc.createElement("record");
-            doc.appendChild(record);
+            // Create root element <record>
+            writer.writeStartElement("record");
+            writer.writeCharacters("\n      ");
 
-            // Create <list id="maps"> element inside root
-            Element list = doc.createElement("list");
-            list.setAttribute("id", "maps");
-            record.appendChild(list);
+            // Create element <list id="maps">
+            writer.writeStartElement("list");
+            writer.writeAttribute("id", "maps");
+            writer.writeCharacters("\n");
 
             // Iterate through all players to add records
-            for (Player p : players) {
+            for (Player player: players) {
                 // Determine folder based on player nationality
-                String folderName = NationalityMapper.getFolder(p.getNationality(), p.getSecondNationality());
-                p.setFolder(folderName);
+                String folderName = NationalityMapper.getFolder(player.getNationality(), player.getSecondNationality());
+                player.setFolder(folderName);
 
-                // Get a random image from the folder
                 String imagePath = getRandomImage(basePath + "/" + folderName);
 
-                // Remove ".png" if image exists, else use UID
+                // Remove ".png" extension if image exists, else use player UID
                 String imageWithoutExt = imagePath != null
                         ? new File(imagePath).getName().replace(".png", "")
-                        : p.getUid();
+                        : player.getUid();
 
-                // Create and list <record> element for this player using "from" and "to" data
-                Element playerRecord = doc.createElement("record");
-                playerRecord.setAttribute("from", folderName + "/" + imageWithoutExt);
-                playerRecord.setAttribute("to", "graphics/pictures/person/r-" + p.getUid() + "/portrait");
-                list.appendChild(playerRecord);
+                // Create element <record from="..." to="..."/>
+                writer.writeCharacters("        ");
+                writer.writeStartElement("record");
+                writer.writeAttribute("from", folderName + "/" + imageWithoutExt);
+                writer.writeAttribute("to", "graphics/pictures/person/r-" + player.getUid() + "/portrait");
+                writer.writeEndElement();
+                writer.writeCharacters("\n");
             }
 
-            // Initialize transformer to write XML to file
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            // Close elements
+            writer.writeCharacters("     ");
+            writer.writeEndElement();
+            writer.writeCharacters("\n");
+            writer.writeEndElement();
+            writer.writeEndDocument();
 
-            // Write XML to file
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(outputPath));
-            transformer.transform(source, result);
+            writer.flush();
+            writer.close();
 
-            // Print completion
-            System.out.println("XML written to " + outputPath);
-        } catch (Exception e) {
+            // IMPROVE
+            System.out.println("config.xml successfully written to" + outputPath);
+
+        } catch (Exception e){
+            System.err.println("Error writing to XML file: " + e.getMessage());
             e.printStackTrace();
         }
+
     }
 
-    // Main testing
     public static void main(String[] args) {
         String rtfPath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/rtf/2030andorra.rtf";
         RtfParser parser = new RtfParser();
         List<Player> players = parser.parseRtf(rtfPath);
 
-        for (Player p : players) {
-            String folder = NationalityMapper.getFolder(p.getNationality(), p.getSecondNationality());
-            p.setFolder(folder);
-        }
-
-        XmlWriter processor = new XmlWriter();
-        processor.writeXml(players);
+        XmlWriter writer = new XmlWriter();
+        writer.writeXml(players);
     }
 }
