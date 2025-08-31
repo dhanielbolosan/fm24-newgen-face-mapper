@@ -18,23 +18,25 @@ public class NationalityMapper {
         nationalityMap.put("IRL", "Ireland");
         nationalityMap.put("ISL", "Iceland");
         nationalityMap.put("POR", "Portugal");
-        nationalityMap.put("BEL", "CentralEurope");
         nationalityMap.put("NED", "Netherlands");
+        nationalityMap.put("FIN", "Finstonia");
+        nationalityMap.put("HUN", "Hungary");
+        nationalityMap.put("DEN", "Scandinavian");
+        nationalityMap.put("SWE", "Scandinavian");
+        nationalityMap.put("NOR", "Scandinavian");
+        nationalityMap.put("BEL", "CentralEurope");
         nationalityMap.put("CYP", "CentralEurope");
         nationalityMap.put("AUT", "CentralEurope");
         nationalityMap.put("GER", "CentralEurope");
-        nationalityMap.put("DEN", "Scandinavian");
-        nationalityMap.put("FIN", "Finstonia");
-        nationalityMap.put("SWE", "Scandinavian");
-        nationalityMap.put("NOR", "Scandinavian");
         nationalityMap.put("LUX", "CentralEurope");
         nationalityMap.put("CZE", "CentralEurope");
         nationalityMap.put("SVK", "CentralEurope");
         nationalityMap.put("SVN", "CentralEurope");
         nationalityMap.put("LIE", "CentralEurope");
         nationalityMap.put("MCO", "CentralEurope");
-        nationalityMap.put("HUN", "Hungary");
         nationalityMap.put("SUI", "CentralEurope");
+        nationalityMap.put("SMR", "CentralEurope");
+        nationalityMap.put("GIB", "CentralEurope");
         nationalityMap.put("GRE", "Albaniangreek");
         nationalityMap.put("ALB", "Albaniangreek");
         nationalityMap.put("ROU", "EastBalkan");
@@ -67,6 +69,8 @@ public class NationalityMapper {
         nationalityMap.put("LAO", "MainlandSEA");
         nationalityMap.put("KHM", "MainlandSEA");
         nationalityMap.put("MMR", "MainlandSEA");
+        nationalityMap.put("BRN", "MainlandSEA");
+        nationalityMap.put("TLS", "MainlandSEA");
         nationalityMap.put("SGP", "Singapore");
         nationalityMap.put("UZB", "Uzbekistan");
         nationalityMap.put("KGZ", "CentralAsia");
@@ -98,6 +102,8 @@ public class NationalityMapper {
         nationalityMap.put("TAN", "EastAfrica");
         nationalityMap.put("RWA", "EastAfrica");
         nationalityMap.put("BDI", "EastAfrica");
+        nationalityMap.put("SSD", "EastAfrica");
+        nationalityMap.put("SDN", "EastAsia");
         nationalityMap.put("ETH", "HornOfAfrica");
         nationalityMap.put("SOM", "HornOfAfrica");
         nationalityMap.put("ERI", "HornOfAfrica");
@@ -119,6 +125,8 @@ public class NationalityMapper {
         nationalityMap.put("COD", "CentralAfrica");
         nationalityMap.put("CAF", "CentralAfrica");
         nationalityMap.put("COG", "CentralAfrica");
+        nationalityMap.put("ANG", "CentralAfrica");
+        nationalityMap.put("GNQ", "CentralAfrica");
 
         nationalityMap.put("MAR", "Maghreb");
         nationalityMap.put("ALG", "Maghreb");
@@ -151,6 +159,11 @@ public class NationalityMapper {
         nationalityMap.put("DOM", "Afrocaribbean");
         nationalityMap.put("HTI", "Afrocaribbean");
         nationalityMap.put("BHS", "Afrocaribbean");
+        nationalityMap.put("ATG", "Afrocaribbean");
+        nationalityMap.put("GRD", "Afrocaribbean");
+        nationalityMap.put("LCA", "Afrocaribbean");
+        nationalityMap.put("KNA", "Afrocaribbean");
+        nationalityMap.put("BLZ", "Afrocaribbean");
 
         // middle east
         nationalityMap.put("BHR", "ArabGulf");
@@ -158,6 +171,8 @@ public class NationalityMapper {
         nationalityMap.put("UAE", "ArabGulf");
         nationalityMap.put("SAU", "ArabGulf");
         nationalityMap.put("OMN", "ArabGulf");
+        nationalityMap.put("OMA", "ArabGulf");
+        nationalityMap.put("YEM", "ArabGulf");
         nationalityMap.put("IRQ", "Mashriq");
         nationalityMap.put("SYR", "Mashriq");
         nationalityMap.put("JOR", "Mashriq");
@@ -177,6 +192,11 @@ public class NationalityMapper {
         nationalityMap.put("PLW", "PacificIslanders");
         nationalityMap.put("FSM", "PacificIslanders");
         nationalityMap.put("TUV", "PacificIslanders");
+        nationalityMap.put("NCL", "PacificIslanders");
+        nationalityMap.put("COK", "PacificIslanders");
+        nationalityMap.put("WLF", "PacificIslanders");
+        nationalityMap.put("NUI", "PacificIslanders");
+        nationalityMap.put("ASM", "PacificIslanders");
     }
 
     /**
