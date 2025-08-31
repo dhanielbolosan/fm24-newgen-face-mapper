@@ -30,12 +30,16 @@ public class NationalityMapper {
         nationalityMap.put("LUX", "CentralEurope");
         nationalityMap.put("CZE", "CentralEurope");
         nationalityMap.put("SVK", "CentralEurope");
+        nationalityMap.put("SVN", "CentralEurope");
+        nationalityMap.put("LIE", "CentralEurope");
+        nationalityMap.put("MCO", "CentralEurope");
         nationalityMap.put("HUN", "Hungary");
         nationalityMap.put("SUI", "CentralEurope");
         nationalityMap.put("GRE", "Albaniangreek");
         nationalityMap.put("ALB", "Albaniangreek");
         nationalityMap.put("ROU", "EastBalkan");
         nationalityMap.put("BUL", "EastBalkan");
+        nationalityMap.put("MDA", "EastBalkan");
         nationalityMap.put("SRB", "WestBalkan");
         nationalityMap.put("CRO", "WestBalkan");
         nationalityMap.put("BIH", "WestBalkan");
@@ -67,6 +71,7 @@ public class NationalityMapper {
         nationalityMap.put("UZB", "Uzbekistan");
         nationalityMap.put("KGZ", "CentralAsia");
         nationalityMap.put("TJK", "CentralAsia");
+        nationalityMap.put("KAZ", "CentralAsia");
         nationalityMap.put("MNG", "Mongolia");
         nationalityMap.put("IRN", "Iran");
 
@@ -83,6 +88,10 @@ public class NationalityMapper {
         nationalityMap.put("GMB", "WestAfrica");
         nationalityMap.put("GNB", "WestAfrica");
         nationalityMap.put("CPV", "WestAfrica");
+        nationalityMap.put("NER", "WestAfrica");
+        nationalityMap.put("MLI", "WestAfrica");
+        nationalityMap.put("MRT", "WestAfrica");
+        nationalityMap.put("GIN", "WestAfrica");
 
         nationalityMap.put("KEN", "EastAfrica");
         nationalityMap.put("UGA", "EastAfrica");
@@ -102,6 +111,9 @@ public class NationalityMapper {
         nationalityMap.put("BOT", "SouthernAfrica");
         nationalityMap.put("LSO", "SouthernAfrica");
         nationalityMap.put("MWI", "SouthernAfrica");
+        nationalityMap.put("ZMB", "SouthernAfrica");
+        nationalityMap.put("AGO", "SouthernAfrica");
+        nationalityMap.put("TCD", "CentralAfrica");
         nationalityMap.put("GAB", "CentralAfrica");
         nationalityMap.put("CMR", "CentralAfrica");
         nationalityMap.put("COD", "CentralAfrica");
@@ -133,12 +145,19 @@ public class NationalityMapper {
         nationalityMap.put("DMA", "Afrocaribbean");
         nationalityMap.put("VIN", "Afrocaribbean");
         nationalityMap.put("ANT", "Afrocaribbean");
+        nationalityMap.put("SUR", "Afrocaribbean");
+        nationalityMap.put("GUY", "Afrocaribbean");
+        nationalityMap.put("TTO", "Afrocaribbean");
+        nationalityMap.put("DOM", "Afrocaribbean");
+        nationalityMap.put("HTI", "Afrocaribbean");
+        nationalityMap.put("BHS", "Afrocaribbean");
 
         // middle east
         nationalityMap.put("BHR", "ArabGulf");
         nationalityMap.put("QAT", "ArabGulf");
         nationalityMap.put("UAE", "ArabGulf");
         nationalityMap.put("SAU", "ArabGulf");
+        nationalityMap.put("OMN", "ArabGulf");
         nationalityMap.put("IRQ", "Mashriq");
         nationalityMap.put("SYR", "Mashriq");
         nationalityMap.put("JOR", "Mashriq");
@@ -152,6 +171,12 @@ public class NationalityMapper {
         nationalityMap.put("VAN", "PacificIslanders");
         nationalityMap.put("FJI", "PacificIslanders");
         nationalityMap.put("SAM", "PacificIslanders");
+        nationalityMap.put("SLB", "PacificIslanders");
+        nationalityMap.put("KIR", "PacificIslanders");
+        nationalityMap.put("NRU", "PacificIslanders");
+        nationalityMap.put("PLW", "PacificIslanders");
+        nationalityMap.put("FSM", "PacificIslanders");
+        nationalityMap.put("TUV", "PacificIslanders");
     }
 
     /**
