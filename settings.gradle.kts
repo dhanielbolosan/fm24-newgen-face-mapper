@@ -1,0 +1,1 @@
+rootProject.name = "fm24-newgen-face-mapper"
