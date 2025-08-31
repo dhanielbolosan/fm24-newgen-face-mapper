@@ -1,8 +1,7 @@
 package facemapper;
 
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import java.io.File;
+import javax.xml.stream.*;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,48 +18,42 @@ public class XmlParser {
     public Map<String, Map<String, String>> parseXml(String filePath) {
         Map<String, Map<String, String>> result = new HashMap<>();
 
-        try {
-            // Load XML file object and normalize XML
-            File xmlFile = new File(filePath);
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(xmlFile);
-            doc.getDocumentElement().normalize();
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+            // Initialize factory and reader
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLStreamReader reader = factory.createXMLStreamReader(fis);
 
-            // Get and iterate through each <records> element
-            NodeList records = doc.getElementsByTagName("record");
-            for (int i = 0; i < records.getLength(); i++) {
-                Node node = records.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
+            // Read the file
+            while (reader.hasNext()) {
+                int event = reader.next();
 
-                    // Only process elements with "from" and "to"
-                    if (element.hasAttribute("from") && element.hasAttribute("to")) {
-                        String from = element.getAttribute("from");
-                        String to = element.getAttribute("to");
+                if (event == XMLStreamConstants.START_ELEMENT) {
+                    if ("record".equals(reader.getLocalName())) {
+                        String from = reader.getAttributeValue(null, "from");
+                        String to = reader.getAttributeValue(null, "to");
 
-                        // Extract UID from "to"
-                        String[] toParts = to.split("/");
-                        String uid = toParts[toParts.length - 2].replace("r-", "");
+                        if (from != null && to != null) {
+                            // Extract UID from "to"
+                            String[] toParts = to.split("/");
+                            String uid = toParts[toParts.length - 2].replace("r-", "");
 
-                        // Extract nationality and image from "from"
-                        String[] fromParts = from.split("/");
-                        if (fromParts.length == 2) {
-                            String nationality = fromParts[0];
-                            String image = fromParts[1];
+                            // Extract Nationality and Image from "from"
+                            String[] fromParts = from.split("/");
+                            if (fromParts.length == 2) {
+                                String nationality = fromParts[0];
+                                String image = fromParts[1];
 
-                            // Store extracted data in nested map
-                            Map<String, String> data = new HashMap<>();
-                            data.put("nationality", nationality);
-                            data.put("image", image);
-
-                            result.put(uid, data);
+                                Map<String, String> data = new HashMap<>();
+                                data.put("nationality", nationality);
+                                data.put("image", image);
+                                result.put(uid, data);
+                            }
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error parsing XML: " + e.getMessage());
+            System.err.println("Error parsing XML: " + e.getMessage());
         }
         return result;
     }

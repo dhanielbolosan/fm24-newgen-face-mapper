@@ -52,9 +52,11 @@ public class XmlWriter {
             System.err.println("Failed to create directory: " + folder.getAbsolutePath());
         }
 
+        // Initialize factory
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
         try (FileOutputStream fos = new FileOutputStream(outputPath)) {
+            // Initialize writer
             XMLStreamWriter writer = factory.createXMLStreamWriter(fos, "UTF-8");
 
             // Create root element <record>
