@@ -27,7 +27,7 @@ public class XmlWriter {
      * @param folderPath Path to the folder containing images
      * @return Path of a randomly selected image, or null if none found
      */
-    private static String getRandomImage(String folderPath) {
+    static String getRandomImage(String folderPath) {
         // Try to get cached image list for folder
         File[] images = folderCache.get(folderPath);
 
@@ -56,13 +56,12 @@ public class XmlWriter {
      * @param mode             Mapping mode
      * @param existingMappings Existing XML mappings (optional)
      */
-    public void writeXml(List<Player> players, MappingMode mode, Map<String, Map<String,String>> existingMappings) {
-        // NEED TO IMPLEMENT CHOOSING PATH
-        String basePath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/Football Manager 2024/graphics/NG_Regens";
-        String outputPath = basePath + "/config.xml";
+    public void writeXml(List<Player> players, MappingMode mode, Map<String, Map<String,String>> existingMappings, String targetDirectory) {
+        // Build the output path
+        String outputPath = targetDirectory + File.separator + "config.xml";
 
-        // Create folder if not exist
-        File folder = new File(basePath);
+        // Ensure the folder exists
+        File folder = new File(targetDirectory);
         if (!folder.exists() && !folder.mkdirs()) {
             System.err.println("Failed to create directory: " + folder.getAbsolutePath());
         }
@@ -122,10 +121,13 @@ public class XmlWriter {
                 player.setFolder(folderName);
 
                 // Get a random image, remove ".png" extension, otherwise use the player uid
-                String imagePath = getRandomImage(basePath + "/" + folderName);
-                String imageWithoutExt = (imagePath != null)
-                        ? new File(imagePath).getName().replace(".png", "")
-                        : player.getUid();
+                String imagePath = getRandomImage(targetDirectory + File.separator + folderName);
+                String imageWithoutExt;
+                if (imagePath != null) {
+                    imageWithoutExt = new File(imagePath).getName().replace(".png", "");
+                } else {
+                    imageWithoutExt = player.getUid();
+                }
 
                 // Mark uid
                 writtenUids.add(uid);
@@ -161,6 +163,7 @@ public class XmlWriter {
         }
     }
 
+    /*
     public static void main(String[] args) {
         String rtfPath = "/Users/dhanielbolosan/Library/Application Support/Sports Interactive/rtf/andorranew.rtf";
         RtfParser parser = new RtfParser();
@@ -178,6 +181,6 @@ public class XmlWriter {
         Map<String, Map<String, String>> existingMappings = xmlParser.parseXml("/Users/dhanielbolosan/Library/Application Support/Sports Interactive/Football Manager 2024/graphics/NG_Regens/config.xml");
         System.out.println("Testing PRESERVE mode");
         writer.writeXml(players, MappingMode.PRESERVE, existingMappings);
-         */
     }
+     */
 }
