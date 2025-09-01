@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="fm24-newgen-face-mapper.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/fm24_newgen_face_mapper_main_jar</output-path>
+    <root id="archive" name="fm24-newgen-face-mapper.main.jar">
+      <element id="module-output" name="fm24-newgen-face-mapper.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/17.0.11/4af406f1f362016f62cace59cf9046fd4e63a9ef/javafx-fxml-17.0.11-mac.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/17.0.11/64b79596dfdabde3889e4a14c9c5e880ebb94222/javafx-controls-17.0.11-mac.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/17.0.11/be9e03db9ae9b09ee95ae5792428d94e1c77471b/javafx-base-17.0.11-mac.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/17.0.11/2ceccd98b06328c2e9b8e3aa54ebbb608738c8ef/javafx-graphics-17.0.11-mac.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
